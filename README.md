@@ -28,4 +28,8 @@ open http://localhost:3001
 ```
 # 滅びの呪文（全部消す）
 docker compose down --rmi all --volumes --remove-orphans
+
+# DockerのMySQL関連の環境変数変更時はこちらも
+# すでにDBがある場合、変更が反映されないため
+rm -rf tmp
 ```
