@@ -16,8 +16,9 @@ services:
   mysql:
     container_name: "mysql"
     build:
-      context: "."
-      dockerfile: dockerfiles/mysql/Dockerfile
+      # Dockerfile 内でCOPYコマンドのパスがあうように、コンテキストを変更する
+      context: "dockerfiles/mysql/"
+      dockerfile: Dockerfile
     volumes:
       # 開発環境のためパフォーマンス優先で delegated を付与する
       # see: https://docs.docker.jp/docker-for-mac/osxfs-caching.html#delegated

@@ -11,6 +11,6 @@ RUN apt-get update \
 ENV LC_ALL ja_JP.UTF-8
 
 # Set MySQL config file
-# RUN mkdir -p /etc/my.cnf.d
-# COPY etc/my.cnf.d/* /etc/my.cnf.d/
-# COPY etc/* /etc/
+RUN mkdir -p /etc/my.cnf.d
+COPY etc/my.cnf.d/* /etc/my.cnf.d/
+COPY etc/* /etc/
