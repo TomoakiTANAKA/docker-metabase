@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  metabase:
+    container_name: "metabase"
+    build:
+      context: "."
+      dockerfile: dockerfiles/metabase/Dockerfile
+    env_file: ./env.local
+    volumes:
+      - ./metabase-data:/metabase-data
+    ports:
+      - 3000:3000
+    depends_on:
+      - mysql
+
+  mysql:
+    container_name: "mysql"
+    build:
+      context: "."
+      dockerfile: dockerfiles/mysql/Dockerfile
+    volumes:
+      # 開発環境のためパフォーマンス優先で delegated を付与する
+      # see: https://docs.docker.jp/docker-for-mac/osxfs-caching.html#delegated
+      - "./tmp/mysql/volumes/mysql:/var/lib/mysql:delegated"
+      # コンテナ作成時のsql実行のための設定
+      - "./tmp/mysql/volumes/initdb.d:/docker-entrypoint-initdb.d"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: "metabase-db"        # オプション： Docker起動時に作成するデータベース名
+      MYSQL_USER: "metabaseroot"           # 作業ユーザー名
+      MYSQL_PASSWORD: "metabaseroot"       # 作業ユーザーアカウントのパスワード
+      MYSQL_ROOT_PASSWORD: "root"          # 必須： rootアカウントのパスワード
+      MYSQL_PORT_3306_TCP_ADDR: "localhost"
+      MYSQL_PORT_3306_TCP_PORT: 3306
+      TZ: "Asia/Tokyo"
